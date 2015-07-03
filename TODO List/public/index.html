@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link rel="stylesheet" href="style.css"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="calendar_ru.js"></script>
+<title>Play with your day - ToDo List</title>
+</head>
+<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js?ver=1.6.4'></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<body onload="setDefaultDateField(), getTasks()">
+<div class="header-wr">
+<div class="header">
+<a href="https://github.com/spacemaster188" target="_blank"><img src="img/logo.png" /></a>
+</div>
+</div>
+<!--end header-->
+<div class="content">
+<div class="content-top">
+<div class="content-top-button-wr"><img src="img/button-fix.png" title="Fix task" id="fix" onclick="fixTasks()" onmouseout="this.src='img/button-fix.png'" onmouseover="this.src='img/button-fix-pr.png'" /></div>
+<div class="content-top-devider"></div>
+<div class="content-top-button-wr"><a href="fileSaver.html" target="_blank"><img src="img/button-download.png" title="Download tasks" id="down" onmouseout="this.src='img/button-download.png'" onmouseover="this.src='img/button-download-pr.png'"/></a></div>
+<div class="content-top-devider"></div>
+<div class="content-top-button-wr"><img src="img/button-edit.png" title="Edit task" id="edit" onclick="editTask()" onmouseout="this.src='img/button-edit.png'" onmouseover="this.src='img/button-edit-pr.png'"/></div>
+<div class="content-top-devider"></div>
+<div class="content-top-button-wr"><img src="img/button-del.png" title="Delete task" onclick="deleteTasks()" id="del" onmouseout="this.src='img/button-del.png'" onmouseover="this.src='img/button-del-pr.png'"/></div>
+</div>
+<div style="width:100%;height:15px"></div>
+<div id="editBtn" style="width:100%;height:30px;display:none"><a href="#" onclick="applyEditedTask(),showTasks()"><img src="img/button-fix-it.png" title="Modify task" height="30px" onmouseout="this.src='img/button-fix-it.png'" onmouseover="this.src='img/button-fix-it-pr.png'"/></a></div>
+<div class="content-field">
+<textarea id="taskstr"></textarea>
+</div>
+<div style="width:100%;height:5px"></div>
+<div>
+<form:form method="post" action="add">
+<input type="text" name="someday" onfocus="this.select();lcs(this)"
+    onclick="event.cancelBubble=true;this.select();lcs(this)" size="6" id="datestr">
+</form:form>
+</div>
+<div style="width:100%;height:6px"></div>
+<div style="width:100%;height:50px">
+<a href="#" onclick="onAdd()"><img src="img/button-add.png" title="Add new task" id="add" onmouseout="this.src='img/button-add.png'" onmouseover="this.src='img/button-add-pr.png'"/></a>
+</div>
+<div style="width:100%;height:10px"></div>
+<div class="content-filter">
+<div style="width:300px; height:25px; margin:0 auto">
+<div class="content-divider"><a href="#"><img src="img/radio-all.png" title="Show ALL TASKS" onclick="getAllTasks()" /></a></div><div class="content-divider"></div><div class="content-divider"><a href="#"><img src="img/radio-fixed.png" title="Show FIXED TASKS" onclick="getFixedTasks()" /></a></div><div class="content-divider"></div><div class="content-divider"><a href="#"><img src="img/radio-notfixed.png" title="Show NOT FIXED TASKS" onclick="getNonFixedTasks()" /></a></div>
+</div>
+</div>
+<div style="width:100%;height:10px"></div>
+<div class="sortLayer">
+<div class="sort-left" onclick="setSortByDate()">Date <img src="img/sort.png" /></div>
+<div class="sort-chbox-right"></div>
+<div class="sort-right" onclick="setSortByTasks()">Task <img src="img/sort.png" /></div>
+</div>
+<div class="content-tasks" id="tasks">
+</div>
+</div>
+<!--end content-->
+<div class="footer">
+  <div class="img-wr">
+<img src="img/footer-logo1.jpg" class="opacity65"/><img src="img/footer-logo2.jpg" class="opacity65"/>
+  </div>
+</div>
+<!--end footer-->
+<script type="text/javascript" src="script.js"></script>
+</body>
+</html>
