@@ -16,21 +16,21 @@ var preparedTaskArr = [];
 var selected = [];
 /* Update table by pressing Enter*/
 document.onkeyup = function (e) {
-  e = e || window.event;
-  if (e.keyCode === 13) {
-     onAdd();
-  }
-  return false;
+    e = e || window.event;
+    if (e.keyCode === 13) {
+        onAdd();
+    }
+    return false;
 }
 /* Get tasks */
 function getTasks() {
- $.ajax({
-    url: "/task",
-    type: "GET"
- }).done(function(data){
-    taskArr = data;
-	showTasks();
- });
+    $.ajax({
+        url: "/task",
+        type: "GET"
+    }).done(function(data){
+        taskArr = data;
+        showTasks();
+    });
 }
 /*Setting default string for date field */
 function setDefaultDateField() {
@@ -63,11 +63,7 @@ function byDate(a, b) {
 }
 /*Add new task */
 function addElement(fixed, task, dateStr) {
-    var addJsonObj = {
-        isCompleted: fixed,
-        task: task,
-        date: dateStr
-    };
+    var addJsonObj = {isCompleted: fixed, task: task, date: dateStr};
     $.ajax({
         type: 'POST',
         url: '/task',
@@ -86,13 +82,17 @@ function addElementToArray(element, mas) {
 }
 /* Modify task */
 function taskArrModifyItem() {
-    var jsonEditedTmp = {"id":editIdTmp, "task":taskString, "date":dateString};
+    var jsonArrSelected = [];
+    var tmpEl = {"id":editIdTmp, "task":taskString, "date":dateString};
+    jsonArrSelected.push(tmpEl);
+    var tmpEl2 = {"id":null, "task":null, "date":"editFlag"};
+    jsonArrSelected.push(tmpEl2);
     $.ajax({
         type: 'PUT',
         url: '/task',
         processData: false,
         contentType: 'application/json',
-        data: JSON.stringify(jsonEditedTmp)
+        data: JSON.stringify(jsonArrSelected)
     }).done(function(data){
         taskArr = data;
         showTasks();
@@ -113,44 +113,43 @@ function showTask(idx) {
 }
 
 function onAdd() {
-  taskString = document.getElementById('taskstr').value;
-  dateString = document.getElementById('datestr').value;
-	
-  if(taskString.trim() && dateString.trim()){
-      addElement(false, taskString, dateString);
-  }
-  document.getElementById('taskstr').value = emptyStr;
-  setDefaultDateField();
-  selected = [];
+    taskString = document.getElementById('taskstr').value;
+    dateString = document.getElementById('datestr').value;
+
+    if(taskString.trim() && dateString.trim()){
+        addElement(false, taskString, dateString);
+    }
+    document.getElementById('taskstr').value = emptyStr;
+    setDefaultDateField();
+    selected = [];
 }
 
 function showTasks() {
-  tasksField = document.getElementById('tasks');
-  var editBtnLink = document.getElementById('editBtn');
-     if(tasksAll){
+    tasksField = document.getElementById('tasks');
+    var editBtnLink = document.getElementById('editBtn');
+    if(tasksAll){
         proceedAll4ShowTasks();
-	 }else{
-	    if(fix){
-           proceedFixed4ShowTasks();
-	    }else{
-           proceedNonFixed4ShowTasks();
+    }else{
+        if(fix){
+            proceedFixed4ShowTasks();
+        }else{
+            proceedNonFixed4ShowTasks();
         }
-     }
-     if(!sortByDefault){
-		if(sortByLetter && preparedTaskArr.length>1){
-			preparedTaskArr.sort(byTask);
-		}
-		if(sortByDate && preparedTaskArr.length>1){
-			preparedTaskArr.sort(byDate);
-		}
-	 }
-     tasksTmp = generateHtml();
-	 tasksField.innerHTML = tasksTmp;
-	 tasksTmp = emptyStr;
-	 preparedTaskArr = [];
-	 editBtnLink.style.display = "none";
+    }
+    if(!sortByDefault){
+        if(sortByLetter && preparedTaskArr.length>1){
+            preparedTaskArr.sort(byTask);
+        }
+        if(sortByDate && preparedTaskArr.length>1){
+            preparedTaskArr.sort(byDate);
+        }
+    }
+    tasksTmp = generateHtml();
+    tasksField.innerHTML = tasksTmp;
+    tasksTmp = emptyStr;
+    preparedTaskArr = [];
+    editBtnLink.style.display = "none";
 }
-
 
 function generateHtml() {
   var tmp = '';
@@ -237,14 +236,16 @@ function fixTasks() {
     if(selected.length>0){
         selected.sort();
         var jsonArrSelected = [];
-        var tmpEl;
+        var tmpEl = '';
         for (var i=0; i<selected.length; i++) {
-            tmpEl = {"id":selected[i]};
+            tmpEl = {"id":selected[i], "task":taskArr[Number(selected[i])].task, "date":taskArr[Number(selected[i])].date};
             jsonArrSelected.push(tmpEl);
         }
+        var tmpEl2 = {"id":null, "task":null, "date":"fixFlag"};
+        jsonArrSelected.push(tmpEl2);
         $.ajax({
-            type: 'POST',
-            url: '/fixTasks',
+            type: 'PUT',
+            url: '/task',
             processData: false,
             contentType: 'application/json',
             data: JSON.stringify(jsonArrSelected)
